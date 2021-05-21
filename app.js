@@ -94,7 +94,7 @@ function checkParams() {
 function scheduleCowinPinger(params) {
     let pingCount = 0;
     timer = setInterval(() => {
-        console.clear();
+        // console.clear();
         pingCount += 1;
         pingCowin(params);
         console.log("Ping Count - ", pingCount);
@@ -142,9 +142,14 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
         if (isSlotAvailable) {
             let WebhookUrl = 'https://discord.com/api/webhooks/845311349622177813/cj0jVYkZ18bIjrSwtpht6fHhMpT4Q7o8Hh1qg8pnZxCTr0_GXQCD-siGke8LLzgn4rv6'
             axios.post(WebhookUrl , {
-                "content": "Cowin Vaccine Alert",
+                "content": "@everyone Cowin Vaccine Alert",
+                "allowed_mentions": {
+                    "parse": ["everyone"]
+                },
                 "embeds": [{
                     "description": dataOfSlot,
+                    "title": 'Book from CoWin',
+                    "url": 'https://selfregistration.cowin.gov.in/',
                   }]
                 
             })
