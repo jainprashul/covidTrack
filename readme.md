@@ -9,7 +9,7 @@ Update: Now works without IFTTT by playing a notification sound when a slot is f
 
 Install [node](https://nodejs.org/en/download/), if not already installed. Then run the following command:
 
-    npx cowin-pinger run --age=<YOUR-AGE> --district=<DISTRICT-ID> --dose=<DOSE-NO>
+    npx cowin-pinger-discord run --age=<YOUR-AGE> --district=<DISTRICT-ID> --dose=<DOSE-NO>
 
 Replace the arguments above with the required values like mentioned below
 
@@ -31,22 +31,7 @@ Optional arguments accepted:
 
   ## Discord LINK 
   Click here get discord Server [LINK](https://discord.gg/N6UNNgr8KE)
-  ## IFTTT Integration (Optional)
-  By integrating with [IFTTT](https://ifttt.com/) you can recieve the notification on your phone.
-  - ### Setting Up IFTTT
 
-    - Follow the steps mentioned in the [article](https://betterprogramming.pub/how-to-send-push-notifications-to-your-phone-from-any-script-6b70e34748f6) to setup IFTTT.
-
-    - Install IFTTT App on phone to recieve notifications
-
-    - Test if you receive notification like mentioned in the article above.
-  - ### Run Cowin-Pinger with IFTTT Configuration
-
-        npx cowin-pinger run --key=<IFTTT-KEY> --hook=<IFTTT-WEBHOOK-NAME> --age=<YOUR-AGE> --district=<DISTRICT-ID>
-   
-      - Replace `<IFTTT-KEY>` with your WebHook Key from IFTTT.
-
-      - Replace `<IFTTT-WEBHOOK-NAME>` with the name you used for the WebHook in IFTTT.
 
 ## <a name="district_list">District IDs</a>
 

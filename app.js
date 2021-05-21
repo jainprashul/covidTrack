@@ -8,7 +8,7 @@ const path = require("path");
 const notificationSound = path.join(__dirname, "sounds/beep.wav");
 
 const defaultInterval = 10; // interval between pings in minutes
-const appointmentsListLimit = 2 // Increase/Decrease it based on the amount of information you want in the notification.
+const appointmentsListLimit = 10 // Increase/Decrease it based on the amount of information you want in the notification.
 let timer = null;
 const sampleUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
 
@@ -109,7 +109,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
     axios.get(url, { headers: { 'User-Agent': sampleUserAgent } }).then((result) => {
         const { centers } = result.data;
         let isSlotAvailable = false;
-        let dataOfSlot = "";
+        let dataOfSlot = `Availibilty for ${ centers[0].district_name}`;
         let appointmentsAvailableCount = 0;
         if (centers.length) {
             centers.forEach(center => {
@@ -126,21 +126,27 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                         }
                         isSlotAvailable = true
                         appointmentsAvailableCount++;
-                        if (appointmentsAvailableCount <= appointmentsListLimit) {
-                            dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name} on ${session.date}`;
-                        }
+                        // if (appointmentsAvailableCount <= appointmentsListLimit) {
+                        //     dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
+                        // }
+                        dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
+
                     }
                 }))
             });
 
-            if (appointmentsAvailableCount - appointmentsListLimit) {
-                dataOfSlot = `${dataOfSlot}\n${appointmentsAvailableCount - appointmentsListLimit} more slots available...`
-            }
+            // if (appointmentsAvailableCount - appointmentsListLimit) {
+            //     dataOfSlot = `${dataOfSlot}\n${appointmentsAvailableCount - appointmentsListLimit} more slots available...`
+            // }
         }
         if (isSlotAvailable) {
             let WebhookUrl = 'https://discord.com/api/webhooks/845311349622177813/cj0jVYkZ18bIjrSwtpht6fHhMpT4Q7o8Hh1qg8pnZxCTr0_GXQCD-siGke8LLzgn4rv6'
             axios.post(WebhookUrl , {
-                "content": dataOfSlot
+                "content": "Cowin Vaccine Alert",
+                "embeds": [{
+                    "description": dataOfSlot,
+                  }]
+                
             })
             sound.play(notificationSound);
             console.log(dataOfSlot);
