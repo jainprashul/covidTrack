@@ -142,7 +142,8 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
             axios.post(WebhookUrl , {
                 "content": dataOfSlot
             })
-
+            sound.play(notificationSound);
+            console.log(dataOfSlot);
 
             if (hook && key) {
                 axios.post(`https://maker.ifttt.com/trigger/${hook}/with/key/${key}`, { value1: dataOfSlot }).then(() => {
