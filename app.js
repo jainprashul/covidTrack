@@ -109,7 +109,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
     axios.get(url, { headers: { 'User-Agent': sampleUserAgent } }).then((result) => {
         const { centers } = result.data;
         let isSlotAvailable = false;
-        let dataOfSlot = `Availibilty for ${ centers[0].district_name}`;
+        let dataOfSlot = `Availibilty for ${ centers[0].district_name} for age ${age}`;
         let appointmentsAvailableCount = 0;
         if (centers.length) {
             centers.forEach(center => {
@@ -129,7 +129,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                         // if (appointmentsAvailableCount <= appointmentsListLimit) {
                         //     dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
                         // }
-                        dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
+                        dataOfSlot = `${dataOfSlot}\n ${session.available_capacity} slots available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
 
                     }
                 }))
@@ -148,21 +148,21 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                   }]
                 
             })
-            sound.play(notificationSound);
+            sound.play(notificationSound ,1);
             console.log(dataOfSlot);
 
-            if (hook && key) {
-                axios.post(`https://maker.ifttt.com/trigger/${hook}/with/key/${key}`, { value1: dataOfSlot }).then(() => {
-                    console.log('Sent Notification to Phone \nStopping Pinger...')
-                    sound.play(notificationSound);
-                    // clearInterval(timer);
-                });
-            } else {
-                console.log(dataOfSlot);
-                console.log('Slots found\nStopping Pinger...')
-                sound.play(notificationSound, 1);
-                // clearInterval(timer);
-            }
+            // if (hook && key) {
+            //     axios.post(`https://maker.ifttt.com/trigger/${hook}/with/key/${key}`, { value1: dataOfSlot }).then(() => {
+            //         console.log('Sent Notification to Phone \nStopping Pinger...')
+            //         sound.play(notificationSound);
+            //         // clearInterval(timer);
+            //     });
+            // } else {
+            //     console.log(dataOfSlot);
+            //     console.log('Slots found\nStopping Pinger...')
+            //     sound.play(notificationSound, 1);
+            //     // clearInterval(timer);
+            // }
         }
     }).catch((err) => {
         console.log("Error: " + err.message);
