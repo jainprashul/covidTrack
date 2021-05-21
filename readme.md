@@ -29,7 +29,8 @@ Optional arguments accepted:
 
   (Note: Search by District is recommended as searching by PINCODE will have lower chances of finding a slot)
 
-  
+  ## Discord LINK 
+  Click here get discord Server [LINK](https://discord.gg/N6UNNgr8KE)
   ## IFTTT Integration (Optional)
   By integrating with [IFTTT](https://ifttt.com/) you can recieve the notification on your phone.
   - ### Setting Up IFTTT
