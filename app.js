@@ -97,7 +97,7 @@ function scheduleCowinPinger(params) {
         // console.clear();
         pingCount += 1;
         pingCowin(params);
-        console.log(Date().toLocaleTimeString(), " Ping Count - ", pingCount);
+        console.log(new Date().toLocaleTimeString(), " Ping Count - ", pingCount);
     }, params.interval * 60000);
 }
 
