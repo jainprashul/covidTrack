@@ -151,8 +151,11 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                     "title": 'Book from CoWin',
                     "url": 'https://selfregistration.cowin.gov.in/',
                   }]
-                
             })
+            
+            let TeleBot = `https://api.telegram.org/bot1699519640:AAFDRswwb9vVEWaNovjWpmq2B6gtf9MGkWY/sendMessage?chat_id=-1001485703197&text=${dataOfSlot}`
+            axios.get(TeleBot)
+            
             sound.play(notificationSound ,1);
             console.log(dataOfSlot);
 
