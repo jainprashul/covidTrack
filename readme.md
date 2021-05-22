@@ -1,15 +1,21 @@
 #  COWIN VACCINE AVAILABILITY NOTIFIER
 Get notified on your phone when there is a vaccine slot available at your location, by running a script on your computer. Uses Co-Win public APIs. 
 
-Update: Now works without IFTTT by playing a notification sound when a slot is found.
+Update: Now works with Integrated with Discord Bot Notification and telegram bot.
 
-![Instructions-GIF](https://github.com/abhinavdc/cowin-pinger/blob/main/img/instructions.gif)
+<!-- ![Instructions-GIF](https://github.com/abhinavdc/cowin-pinger/blob/main/img/instructions.gif) -->
+
+  ## Discord Link
+  Link:  [https://discord.gg/N6UNNgr8KE](https://discord.gg/N6UNNgr8KE)
+
+  ## Telegram Link
+  Link : [https://t.me/chwcowin](https://t.me/chwcowin) 
 
 ## GETTING STARTED
 
 Install [node](https://nodejs.org/en/download/), if not already installed. Then run the following command:
 
-    npx cowin-pinger-discord run --age=<YOUR-AGE> --district=<DISTRICT-ID> --dose=<DOSE-NO>
+    npx cowin-pinger-discord run --age=<YOUR-AGE> --district=<DISTRICT-ID> --dose=<DOSE-NO> --interval=2
 
 Replace the arguments above with the required values like mentioned below
 
@@ -28,9 +34,6 @@ Optional arguments accepted:
   - Pass `--pin=<YOUR-AREA-PIN-CODE>` to search for availabe slots based on pin code. (`<DISTRICT-ID>` is not required and will be ignored if searching by PIN)
 
   (Note: Search by District is recommended as searching by PINCODE will have lower chances of finding a slot)
-
-  ## Discord LINK 
-  Click here get discord Server [LINK](https://discord.gg/N6UNNgr8KE)
 
 
 ## <a name="district_list">District IDs</a>
@@ -991,9 +994,6 @@ Optional arguments accepted:
 ## Developer Todo 
 - Improve cli interface
 
-### Sample Notification on Phone
-
-<img src="https://github.com/abhinavdc/cowin-pinger/blob/main/img/notification-screenshot.jpg" width="300">
 
 
 
