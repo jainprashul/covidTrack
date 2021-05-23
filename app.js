@@ -109,7 +109,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
     axios.get(url, { headers: { 'User-Agent': sampleUserAgent } }).then((result) => {
         const { centers } = result.data;
         let isSlotAvailable = false;
-        let dataOfSlot = `Availibilty for ${ centers[0].district_name} for age ${age}`;
+        let dataOfSlot = `Availibilty for ${ centers[0].district_name} for age ${age} \n`;
         let appointmentsAvailableCount = 0;
         if (centers.length) {
             centers.forEach(center => {
@@ -129,7 +129,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                         // if (appointmentsAvailableCount <= appointmentsListLimit) {
                         //     dataOfSlot = `${dataOfSlot}\nSlot for ${session.available_capacity} is available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
                         // }
-                        dataOfSlot = `${dataOfSlot}\n ${session.available_capacity} slots available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date}`;
+                        dataOfSlot = `${dataOfSlot}\n ${session.available_capacity} slots available: ${center.name}, ${center.address}, ${center.block_name} on ${session.date} \n`;
 
                     }
                 }))
