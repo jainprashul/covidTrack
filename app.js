@@ -140,7 +140,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
             // }
         }
         if (isSlotAvailable) {
-            let WebhookUrl = 'https://discord.com/api/webhooks/845311349622177813/cj0jVYkZ18bIjrSwtpht6fHhMpT4Q7o8Hh1qg8pnZxCTr0_GXQCD-siGke8LLzgn4rv6'
+            let WebhookUrl = process.env.DISCORD_WEBHOOK
             axios.post(WebhookUrl , {
                 "content": "@everyone Cowin Vaccine Alert",
                 "allowed_mentions": {
@@ -153,7 +153,9 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                   }]
             })
             
-            let TeleBot = `https://api.telegram.org/bot1699519640:AAFDRswwb9vVEWaNovjWpmq2B6gtf9MGkWY/sendMessage?chat_id=-1001485703197&text=${dataOfSlot}`
+            let botId = process.env.BOT_ID
+            let chatId = process.env.CHAT_ID
+            let TeleBot = `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${dataOfSlot}`
             axios.get(TeleBot)
             
             sound.play(notificationSound ,1);
