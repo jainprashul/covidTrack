@@ -18,14 +18,17 @@ function checkParams() {
     if (argv.help) {
         console.error('Refer documentation for more details');
     } else if (argv._ && argv._.length && argv._.includes('run')) {
-        if (argv.key && typeof argv.key !== 'string') {
-            console.error('Please provide a valid IFTTT Webook API Key by appending --key=<IFTTT-KEY> to recieve mobile notification \nRefer documentation for more details');
+        if (argv.tbot && typeof argv.tbot !== 'string') {
+            console.error('Please provide a valid Telegram Bot ID by appending --tbot=<TELEGRAM-BOT-ID> to recieve mobile notification \nRefer documentation for more details');
             return;
-        } else if (argv.hook && typeof argv.hook !== 'string') {
-            console.error('Please provide a valid IFTTT Webook Name Key by appending --hook=<IFTTT-WEBHOOK-NAME> to recieve mobile notification \nRefer documentation for more details');
+        } else if (argv.dhook && typeof argv.dhook !== 'string') {
+            console.error('Please provide a valid Discord Webook Url by appending --dhook=<DISCORD-WEBHOOK-URL> to recieve mobile notification \nRefer documentation for more details');
             return;
-        } else if (argv.hook && !argv.key || !argv.hook && argv.key) {
-            console.error('Please provide both IFTTT Webook Name Key and IFTTT Webhook Key to recieve mobile notification \nRefer documentation for more details');
+        } else if (argv.tchat && typeof argv.tchat !== 'number') {
+            console.error('Please provide a valid Telegram Chat ID by appending --tchat=<TELEGRAM-CHAT-ID> to recieve mobile notification \nRefer documentation for more details');
+            return;
+        } else if (argv.tbot && !argv.tchat || !argv.tbot && argv.tchat) {
+            console.error('Please provide both Telegram Bot ID and Telegram Chat ID to recieve mobile notification \nRefer documentation for more details');
             return;
         } else if (!argv.age) {
             console.error('Please provide your age by appending --age=<YOUR-AGE> \nRefer documentation for more details');
@@ -55,8 +58,9 @@ function checkParams() {
             const params = {
                 vaccine: argv.vaccine, // vaccine = COVISHIELD , COVAXIN
                 dose: argv.dose, // dose = 1, 2
-                key: argv.key,
-                hook: argv.hook,
+                tbot: argv.tbot,
+                tchat: argv.tchat,
+                dhook: argv.dhook,
                 age: argv.age,
                 districtId: argv.district,
                 interval: argv.interval || defaultInterval,
@@ -77,9 +81,12 @@ function checkParams() {
             }
             console.log(`Time interval= ${params.interval} minutes (default is 10)`);
             console.log(`Appointment Count= ${params.appointmentsListLimit} (default is 2)`);
-            if (params.hook && params.key) {
-                console.log(`IFTTT API Key= ${params.key || "not configured"}`);
-                console.log(`IFTTT Hook Name= ${params.hook || "not configured"}`);
+            if (params.dhook){
+                console.log(`Discord WebhookUrl : ${params.dhook || 'not configured'}`);
+            }
+            if (params.tbot && params.tchat) {
+                console.log(`Telegram Bot ID= ${params.tbot || "not configured"}`);
+                console.log(`Telegram Chat ID= ${params.tchat || "not configured"}`);
             } else {
                 console.log('\nMake sure to turn up the volume to hear the notifcation sound')
             }
@@ -87,7 +94,7 @@ function checkParams() {
             scheduleCowinPinger(params);
         }
     } else {
-        console.log('\nInvalid command\n\nRun `cowin-pinger run` with all required params to start pinging cowin portal\nRefer documentation for instructions on how to run package\n');
+        console.log('\nInvalid command\n\nRun `cowin-pinger-discord run` with all required params to start pinging cowin portal\nRefer documentation for instructions on how to run package\n');
     }
 }
 
@@ -101,7 +108,7 @@ function scheduleCowinPinger(params) {
     }, params.interval * 60000);
 }
 
-function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pin, vaccine, dose }) {
+function pingCowin({ tbot, tchat, dhook, age, districtId, appointmentsListLimit, date, pin, vaccine, dose }) {
     const baseUrl = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/'
 
     let url = pin ? `${baseUrl}calendarByPin?pincode=${pin}&date=${date}` : `${baseUrl}calendarByDistrict?district_id=${districtId}&date=${date}`
@@ -140,7 +147,7 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
             // }
         }
         if (isSlotAvailable) {
-            let WebhookUrl = process.env.DISCORD_WEBHOOK
+            let WebhookUrl = dhook ? dhook : 'https://discord.com/api/webhooks/845311349622177813/cj0jVYkZ18bIjrSwtpht6fHhMpT4Q7o8Hh1qg8pnZxCTr0_GXQCD-siGke8LLzgn4rv6'
             axios.post(WebhookUrl , {
                 "content": "@everyone Cowin Vaccine Alert",
                 "allowed_mentions": {
@@ -153,8 +160,8 @@ function pingCowin({ key, hook, age, districtId, appointmentsListLimit, date, pi
                   }]
             })
             
-            let botId = process.env.BOT_ID
-            let chatId = process.env.CHAT_ID
+            let botId = tbot ? tbot : '1699519640:AAFDRswwb9vVEWaNovjWpmq2B6gtf9MGkWY'
+            let chatId = tchat ? tchat.toString() : '-1001485703197'
             let TeleBot = `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${dataOfSlot}`
             axios.get(TeleBot)
             

@@ -35,6 +35,10 @@ Optional arguments accepted:
 
   (Note: Search by District is recommended as searching by PINCODE will have lower chances of finding a slot)
 
+  - Pass `--tbot=<TELEGRAM-BOT-ID>` to set notification for Telegram Bot.
+  - Pass `--tchat=<TELEGRAM-CHAT-ID>` to set notification for Telegram Channel ID
+  - Pass `--dhook=<DISCORD-WEBHOOK-URL>` to integrate the Discord WebHook to Discord Server.
+
 
 ## <a name="district_list">District IDs</a>
 
