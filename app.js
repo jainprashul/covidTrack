@@ -7,9 +7,10 @@ const sound = require("sound-play");
 const path = require("path");
 const notificationSound = path.join(__dirname, "sounds/beep.wav");
 
-const defaultInterval = 10; // interval between pings in minutes
+const defaultInterval = 5; // interval between pings in minutes
 const appointmentsListLimit = 10 // Increase/Decrease it based on the amount of information you want in the notification.
 let timer = null;
+let currentTime = defaultInterval; //in minutes
 const sampleUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
 
 checkParams();
@@ -100,15 +101,17 @@ function checkParams() {
 
 function scheduleCowinPinger(params) {
     let pingCount = 0;
+    let rainCheck = false;
     timer = setInterval(() => {
         // console.clear();
         pingCount += 1;
-        pingCowin(params);
+        rainCheck = pingCowin(params);
         console.log(new Date().toLocaleTimeString(), " Ping Count - ", pingCount);
-    }, params.interval * 60000);
+    }, (rainCheck ? 0.5 : params.interval) * 60000);
 }
 
 function pingCowin({ tbot, tchat, dhook, age, districtId, appointmentsListLimit, date, pin, vaccine, dose }) {
+    let flag = false; // check whether slots available set true
     const baseUrl = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/'
 
     let url = pin ? `${baseUrl}calendarByPin?pincode=${pin}&date=${date}` : `${baseUrl}calendarByDistrict?district_id=${districtId}&date=${date}`
@@ -165,23 +168,16 @@ function pingCowin({ tbot, tchat, dhook, age, districtId, appointmentsListLimit,
             let TeleBot = `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${dataOfSlot}`
             axios.get(TeleBot)
             
-            sound.play(notificationSound ,1);
+            // sound.play(notificationSound ,1);
             console.log(dataOfSlot);
+            flag = true;
+        } 
 
-            // if (hook && key) {
-            //     axios.post(`https://maker.ifttt.com/trigger/${hook}/with/key/${key}`, { value1: dataOfSlot }).then(() => {
-            //         console.log('Sent Notification to Phone \nStopping Pinger...')
-            //         sound.play(notificationSound);
-            //         // clearInterval(timer);
-            //     });
-            // } else {
-            //     console.log(dataOfSlot);
-            //     console.log('Slots found\nStopping Pinger...')
-            //     sound.play(notificationSound, 1);
-            //     // clearInterval(timer);
-            // }
-        }
+        
     }).catch((err) => {
         console.log("Error: " + err.message);
     });
+
+    console.log(flag);
+    return flag;
 }
