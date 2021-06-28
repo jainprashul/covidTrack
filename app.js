@@ -107,12 +107,12 @@ function scheduleCowinPinger(params) {
         pingCount += 1;
         rainCheck = pingCowin(params);
         console.log(new Date().toLocaleTimeString(), " Ping Count - ", pingCount);
-    }, (rainCheck ? 0.5 : params.interval) * 60000);
+    }, (rainCheck ? 0.5 : params.interval) * 60000);  
 }
 
 function pingCowin({ tbot, tchat, dhook, age, districtId, appointmentsListLimit, date, pin, vaccine, dose }) {
     let flag = false; // check whether slots available set true
-    const baseUrl = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/'
+    const baseUrl = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/'
 
     let url = pin ? `${baseUrl}calendarByPin?pincode=${pin}&date=${date}` : `${baseUrl}calendarByDistrict?district_id=${districtId}&date=${date}`
 
